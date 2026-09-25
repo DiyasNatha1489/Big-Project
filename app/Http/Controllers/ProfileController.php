@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,24 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function updateFoto(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'foto_profil' => 'required|image|max:2048',
+        ]);
+
+        $user = $request->user();
+
+        if ($user->foto_profil) {
+            Storage::disk('public')->delete($user->foto_profil);
+        }
+
+        $user->update([
+            'foto_profil' => $request->file('foto_profil')->store('profil', 'public'),
+        ]);
+
+        return back()->with('status', 'foto-updated');
     }
 }
