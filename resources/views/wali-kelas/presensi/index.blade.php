@@ -31,6 +31,13 @@
                                 <a href="{{ asset('storage/'.$p->foto) }}" target="_blank">
                                     <img src="{{ asset('storage/'.$p->foto) }}" class="w-14 h-14 object-cover rounded">
                                 </a>
+                                <span class="block mt-1 text-[10px] text-center {{ $p->tipe === 'surat_izin' ? 'text-blue-600' : 'text-slate-400' }}">
+                                    @if ($p->tipe === 'surat_izin')
+                                        Klaim: {{ ucfirst($p->alasan_izin) }}
+                                    @else
+                                        Foto Absen
+                                    @endif
+                                </span>
                             </td>
                             <td class="p-3">{{ $p->siswa->name }}</td>
                             <td class="p-3">{{ $p->created_at->format('H:i') }}</td>
@@ -40,6 +47,7 @@
                                     'bg-green-100 text-green-800' => $p->status === 'hadir',
                                     'bg-yellow-100 text-yellow-800' => $p->status === 'perlu_verifikasi',
                                     'bg-blue-100 text-blue-800' => $p->status === 'izin',
+                                    'bg-purple-100 text-purple-800' => $p->status === 'sakit',
                                     'bg-red-100 text-red-800' => $p->status === 'telat',
                                 ])>
                                     {{ ucfirst(str_replace('_', ' ', $p->status)) }}
@@ -52,6 +60,7 @@
                                         <option value="hadir" @selected($p->status === 'hadir')>Hadir</option>
                                         <option value="telat" @selected($p->status === 'telat')>Telat</option>
                                         <option value="izin" @selected($p->status === 'izin')>Izin</option>
+                                        <option value="sakit" @selected($p->status === 'sakit')>Sakit</option>
                                         <option value="perlu_verifikasi" @selected($p->status === 'perlu_verifikasi')>Perlu Verifikasi</option>
                                     </select>
                                     <button type="submit" class="text-xs px-2 py-1 bg-gray-800 text-white rounded">Simpan</button>

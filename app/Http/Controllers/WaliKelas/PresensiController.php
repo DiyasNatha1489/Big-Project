@@ -38,7 +38,7 @@ class PresensiController extends Controller
     public function verifikasi(Request $request, Presensi $presensi)
     {
         $request->validate([
-            'status' => 'required|in:hadir,telat,izin,perlu_verifikasi',
+            'status' => 'required|in:hadir,telat,izin,sakit,perlu_verifikasi',
             'catatan_verifikasi' => 'nullable|string|max:255',
         ]);
 

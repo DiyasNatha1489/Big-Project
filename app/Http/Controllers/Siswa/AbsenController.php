@@ -53,7 +53,14 @@ class AbsenController extends Controller
             $request->latitude, $request->longitude
         );
 
-        $status = $jarak <= config('classly.radius_meter') ? 'hadir' : 'perlu_verifikasi';
+        $batasTepatWaktu = Carbon::parse($sesi->tanggal.' '.config('classly.absen_tepat_waktu'));
+        $tepatWaktu = $sekarang->lte($batasTepatWaktu);
+
+        if ($jarak > config('classly.radius_meter')) {
+            $status = 'perlu_verifikasi';
+        } else {
+            $status = $tepatWaktu ? 'hadir' : 'telat';
+        }
 
         $path = $request->file('foto')->store('presensi', 'public');
 
@@ -67,9 +74,11 @@ class AbsenController extends Controller
             'status' => $status,
         ]);
 
-        $pesan = $status === 'hadir'
-            ? 'Absen berhasil! Kamu tercatat hadir.'
-            : 'Absen tersimpan, tapi lokasimu di luar radius sekolah. Wali kelas akan memverifikasi manual.';
+        $pesan = match ($status) {
+            'hadir' => 'Absen berhasil! Kamu tercatat hadir.',
+            'telat' => 'Absen berhasil, tapi kamu tercatat telat.',
+            default => 'Absen tersimpan, tapi lokasimu di luar radius sekolah. Wali kelas akan memverifikasi manual.',
+        };
 
         return redirect()->route('siswa.dashboard')->with('success', $pesan);
     }
@@ -78,6 +87,7 @@ class AbsenController extends Controller
     {
         $request->validate([
             'foto' => 'required|image|max:5120',
+            'alasan' => 'required|in:izin,sakit',
         ]);
 
         $user = auth()->user();
@@ -94,13 +104,14 @@ class AbsenController extends Controller
             'sesi_id' => $sesi->id,
             'siswa_id' => $user->id,
             'tipe' => 'surat_izin',
+            'alasan_izin' => $request->alasan,
             'foto' => $path,
             'latitude' => null,
             'longitude' => null,
-            'status' => 'izin',
+            'status' => 'perlu_verifikasi',
         ]);
 
-        return redirect()->route('siswa.dashboard')->with('success', 'Surat izin berhasil dikirim.');
+        return redirect()->route('siswa.dashboard')->with('success', 'Surat berhasil dikirim, menunggu verifikasi wali kelas.');
     }
 
     private function ambilAtauBuatSesiHariIni(int $kelasId): SesiPresensi

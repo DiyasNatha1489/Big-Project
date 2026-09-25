@@ -20,10 +20,16 @@ class RekapController extends Controller
 
             $totalSiswa = $kelas->siswa()->count();
             $hadir = 0;
+            $telat = 0;
+            $izin = 0;
+            $sakit = 0;
             $perluVerifikasi = 0;
 
             if ($sesi) {
                 $hadir = Presensi::where('sesi_id', $sesi->id)->where('status', 'hadir')->count();
+                $telat = Presensi::where('sesi_id', $sesi->id)->where('status', 'telat')->count();
+                $izin = Presensi::where('sesi_id', $sesi->id)->where('status', 'izin')->count();
+                $sakit = Presensi::where('sesi_id', $sesi->id)->where('status', 'sakit')->count();
                 $perluVerifikasi = Presensi::where('sesi_id', $sesi->id)->where('status', 'perlu_verifikasi')->count();
             }
 
@@ -31,6 +37,9 @@ class RekapController extends Controller
                 'kelas' => $kelas,
                 'total_siswa' => $totalSiswa,
                 'hadir' => $hadir,
+                'telat' => $telat,
+                'izin' => $izin,
+                'sakit' => $sakit,
                 'perlu_verifikasi' => $perluVerifikasi,
                 'alpa' => $sesi ? $totalSiswa - Presensi::where('sesi_id', $sesi->id)->count() : $totalSiswa,
                 'sesi_dibuka' => (bool) $sesi,
