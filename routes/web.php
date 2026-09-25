@@ -46,6 +46,7 @@ Route::middleware(['auth', 'role:siswa'])->prefix('siswa')->group(function () {
     Route::post('/absen', [AbsenController::class, 'store'])->name('siswa.absen.store');
     Route::get('/jadwal', [SiswaJadwalController::class, 'index'])->name('siswa.jadwal.index');
     Route::get('/kegiatan', [SiswaKegiatanController::class, 'index'])->name('siswa.kegiatan.index');
+    Route::post('/absen/izin', [AbsenController::class, 'storeIzin'])->name('siswa.absen.izin');
 });
 
 Route::get('/', function () {
@@ -56,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/foto', [ProfileController::class, 'updateFoto'])->name('profile.foto.update');
 });
 
 require __DIR__.'/auth.php';

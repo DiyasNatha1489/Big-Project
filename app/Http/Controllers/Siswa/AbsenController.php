@@ -74,6 +74,35 @@ class AbsenController extends Controller
         return redirect()->route('siswa.dashboard')->with('success', $pesan);
     }
 
+    public function storeIzin(Request $request)
+    {
+        $request->validate([
+            'foto' => 'required|image|max:5120',
+        ]);
+
+        $user = auth()->user();
+        $kelas = $user->kelas;
+        $sesi = $this->ambilAtauBuatSesiHariIni($kelas->id);
+
+        if (Presensi::where('sesi_id', $sesi->id)->where('siswa_id', $user->id)->exists()) {
+            return back()->with('error', 'Kamu sudah tercatat untuk hari ini.');
+        }
+
+        $path = $request->file('foto')->store('presensi', 'public');
+
+        Presensi::create([
+            'sesi_id' => $sesi->id,
+            'siswa_id' => $user->id,
+            'tipe' => 'surat_izin',
+            'foto' => $path,
+            'latitude' => null,
+            'longitude' => null,
+            'status' => 'izin',
+        ]);
+
+        return redirect()->route('siswa.dashboard')->with('success', 'Surat izin berhasil dikirim.');
+    }
+
     private function ambilAtauBuatSesiHariIni(int $kelasId): SesiPresensi
     {
         $tanggal = Carbon::today()->toDateString();
