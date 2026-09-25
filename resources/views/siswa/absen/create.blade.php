@@ -72,17 +72,29 @@
                         @endif
                     </div>
 
-                    {{-- TAB IZIN: upload file biasa --}}
+                    {{-- TAB IZIN: upload file + pilih alasan --}}
                     <div x-show="tab === 'izin'" x-cloak>
                         <form action="{{ route('siswa.absen.izin') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                             @csrf
+                            <div>
+                                <x-input-label value="Alasan" />
+                                <div class="mt-1 flex gap-4">
+                                    <label class="flex items-center gap-2 text-sm">
+                                        <input type="radio" name="alasan" value="izin" required> Izin
+                                    </label>
+                                    <label class="flex items-center gap-2 text-sm">
+                                        <input type="radio" name="alasan" value="sakit" required> Sakit
+                                    </label>
+                                </div>
+                                <x-input-error :messages="$errors->get('alasan')" class="mt-2" />
+                            </div>
                             <div>
                                 <x-input-label for="foto_izin" value="Unggah Surat Izin / Bukti Sakit" />
                                 <input id="foto_izin" name="foto" type="file" accept="image/*" required
                                     class="block w-full mt-1 border-gray-300 rounded">
                                 <x-input-error :messages="$errors->get('foto')" class="mt-2" />
                             </div>
-                            <x-primary-button class="w-full justify-center">Kirim Izin</x-primary-button>
+                            <x-primary-button class="w-full justify-center">Kirim</x-primary-button>
                         </form>
                     </div>
 

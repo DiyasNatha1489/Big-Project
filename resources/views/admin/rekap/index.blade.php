@@ -15,6 +15,9 @@
                         <th class="p-3">Kelas</th>
                         <th class="p-3">Wali Kelas</th>
                         <th class="p-3">Hadir</th>
+                        <th class="p-3">Telat</th>
+                        <th class="p-3">Izin</th>
+                        <th class="p-3">Sakit</th>
                         <th class="p-3">Perlu Verifikasi</th>
                         <th class="p-3">Alpa</th>
                         <th class="p-3">Total Siswa</th>
@@ -26,6 +29,9 @@
                             <td class="p-3">{{ $r['kelas']->nama }}</td>
                             <td class="p-3">{{ $r['kelas']->waliKelas->name ?? '-' }}</td>
                             <td class="p-3">{{ $r['hadir'] }}</td>
+                            <td class="p-3">{{ $r['telat'] }}</td>
+                            <td class="p-3">{{ $r['izin'] }}</td>
+                            <td class="p-3">{{ $r['sakit'] }}</td>
                             <td class="p-3">{{ $r['perlu_verifikasi'] }}</td>
                             <td class="p-3">{{ $r['alpa'] }}</td>
                             <td class="p-3">{{ $r['total_siswa'] }}</td>
