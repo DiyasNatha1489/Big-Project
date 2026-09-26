@@ -24,7 +24,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/jadwal', [AdminJadwalController::class, 'index'])->name('admin.jadwal.index');
     Route::get('/jadwal/create', [AdminJadwalController::class, 'create'])->name('admin.jadwal.create');
     Route::post('/jadwal', [AdminJadwalController::class, 'store'])->name('admin.jadwal.store');
+    Route::delete('/jadwal/bulk', [AdminJadwalController::class, 'bulkDestroy'])->name('admin.jadwal.bulk-destroy');
+    Route::put('/jadwal/bulk', [AdminJadwalController::class, 'bulkUpdate'])->name('admin.jadwal.bulk-update');
     Route::delete('/jadwal/{jadwal}', [AdminJadwalController::class, 'destroy'])->name('admin.jadwal.destroy');
+    Route::get('/jadwal/{jadwal}/edit', [AdminJadwalController::class, 'edit'])->name('admin.jadwal.edit');
+    Route::put('/jadwal/{jadwal}', [AdminJadwalController::class, 'update'])->name('admin.jadwal.update');
     Route::get('/kegiatan', [AdminKegiatanController::class, 'index'])->name('admin.kegiatan.index');
     Route::get('/kegiatan/create', [AdminKegiatanController::class, 'create'])->name('admin.kegiatan.create');
     Route::post('/kegiatan', [AdminKegiatanController::class, 'store'])->name('admin.kegiatan.store');
