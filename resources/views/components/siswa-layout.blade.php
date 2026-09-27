@@ -10,7 +10,7 @@
 <body class="font-sans antialiased bg-gray-100">
     <div class="flex h-screen overflow-hidden">
 
-        <aside class="flex flex-col w-64 bg-white border-r border-gray-200 shrink-0 h-screen sticky top-0">
+        <aside class="hidden lg:flex lg:flex-col w-64 bg-white border-r border-gray-200 shrink-0 h-screen sticky top-0">
 
             <div class="flex flex-col items-center justify-center py-6 border-b border-gray-200">
                 <img src="{{ asset('images/logo.png') }}" alt="Classly" class="h-10 w-auto">
@@ -18,10 +18,10 @@
             </div>
 
             <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-6 py-4 border-b border-gray-200 hover:bg-gray-50">
-                <x-avatar :user="auth()->user()" />
+                <x-avatar :user="auth()->user()" size="w-10 h-10" />
                 <div class="min-w-0">
                     <p class="text-sm font-semibold text-slate-800 truncate">{{ auth()->user()->name }}</p>
-                    <p class="text-xs text-slate-400 truncate">{{ auth()->user()->kelas->nama ?? 'Belum ada kelas' }}</p>
+                    <p class="text-xs text-slate-400">{{ auth()->user()->kelas->nama ?? 'Belum ada kelas' }}</p>
                 </div>
             </a>
 
@@ -66,17 +66,49 @@
         </aside>
 
         <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
-            <header class="bg-white border-b border-gray-200 flex items-center justify-between px-8 py-4 shrink-0">
-                <div class="flex items-baseline gap-3">
-                    <span class="text-2xl font-bold text-slate-900">{{ config('classly.nama_sekolah') }}</span>
-                    <span class="text-sm text-slate-400">{{ $title ?? 'Dashboard' }}</span>
+            <header class="bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-8 py-4 shrink-0">
+                <div class="flex items-baseline gap-2 lg:gap-3 min-w-0">
+                    <span class="text-lg lg:text-2xl font-bold text-slate-900 truncate">{{ config('classly.nama_sekolah') }}</span>
+                    <span class="hidden sm:inline text-sm text-slate-400 truncate">{{ $title ?? 'Dashboard' }}</span>
                 </div>
             </header>
 
-            <main class="flex-1 p-8">
+            <main class="flex-1 p-4 lg:p-8 pb-24 lg:pb-8">
                 {{ $slot }}
             </main>
         </div>
     </div>
+
+    <nav class="lg:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40 bg-slate-800 rounded-full shadow-lg flex items-center gap-1 px-2 py-2">
+        @php
+            $bottomMenu = [
+                ['group' => 'siswa.dashboard', 'route' => 'siswa.dashboard', 'icon' => 'home'],
+                ['group' => 'siswa.absen.*', 'route' => 'siswa.absen.create', 'icon' => 'check'],
+                ['group' => 'siswa.jadwal.*', 'route' => 'siswa.jadwal.index', 'icon' => 'calendar'],
+                ['group' => 'siswa.kegiatan.*', 'route' => 'siswa.kegiatan.index', 'icon' => 'flag'],
+            ];
+            $bottomIcons = [
+                'home' => 'M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5m5 0h5a1 1 0 001-1V10',
+                'check' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                'calendar' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a1 1 0 001-1V7a1 1 0 00-1-1H5a1 1 0 00-1 1v13a1 1 0 001 1z',
+                'flag' => 'M5 3v18M5 4h11l-2 4 2 4H5',
+            ];
+        @endphp
+
+        @foreach ($bottomMenu as $item)
+            <a href="{{ route($item['route']) }}"
+            class="w-12 h-12 rounded-full flex items-center justify-center transition
+                {{ request()->routeIs($item['group']) ? 'bg-amber-300 text-slate-900' : 'text-slate-300 hover:bg-slate-700' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $bottomIcons[$item['icon']] }}" />
+                </svg>
+            </a>
+        @endforeach
+
+        <a href="{{ route('profile.edit') }}"
+        class="w-12 h-12 rounded-full flex items-center justify-center transition {{ request()->routeIs('profile.edit') ? 'ring-2 ring-amber-300' : '' }}">
+            <x-avatar :user="auth()->user()" size="w-8 h-8" />
+        </a>
+    </nav>
 </body>
 </html>

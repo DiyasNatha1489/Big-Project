@@ -61,15 +61,23 @@
                         <a href="{{ route('wali_kelas.kegiatan.index') }}" class="text-xs text-amber-600 font-medium hover:underline">Lihat Semua</a>
                     </div>
                     <div class="space-y-3">
-                        @forelse ($kegiatanTerdekat as $k)
-                            <div class="flex items-center justify-between text-sm">
+                    @forelse ($kegiatanTerdekat as $k)
+                        <div class="text-sm">
+                            <div class="flex items-center justify-between">
                                 <span class="text-slate-700">{{ $k->judul }}</span>
                                 <span class="text-slate-400">{{ \Carbon\Carbon::parse($k->tanggal)->format('d M') }}</span>
                             </div>
-                        @empty
-                            <p class="text-sm text-slate-400">Tidak ada kegiatan mendatang.</p>
-                        @endforelse
-                    </div>
+                            @if ($k->lokasi || $k->jam_mulai)
+                                <p class="text-xs text-slate-400">
+                                    @if ($k->jam_mulai){{ substr($k->jam_mulai, 0, 5) }} @endif
+                                    @if ($k->lokasi) &middot; {{ $k->lokasi }} @endif
+                                </p>
+                            @endif
+                        </div>
+                    @empty
+                        <p class="text-sm text-slate-400">Tidak ada kegiatan mendatang.</p>
+                    @endforelse
+                </div>
                 </div>
 
             </div>

@@ -24,8 +24,8 @@ class SiswaController extends Controller
         }
 
         $tanggal = Carbon::today()->toDateString();
-        $sesiHariIni = SesiPresensi::where('kelas_id', $kelas->id)->where('tanggal', $tanggal)->first();
 
+        $sesiHariIni = SesiPresensi::where('kelas_id', $kelas->id)->where('tanggal', $tanggal)->first();
         $statusAbsenHariIni = null;
         if ($sesiHariIni) {
             $presensi = Presensi::where('sesi_id', $sesiHariIni->id)->where('siswa_id', $user->id)->first();
@@ -38,10 +38,12 @@ class SiswaController extends Controller
         $kegiatanTerdekat = Kegiatan::where('tanggal', '>=', $tanggal)
             ->where(function ($q) use ($kelas) {
                 $q->where('target', 'semua_kelas')
-                  ->orWhere(fn ($q2) => $q2->where('target', 'kelas_tertentu')->where('kelas_id', $kelas->id));
+                  ->orWhere(function ($q2) use ($kelas) {
+                      $q2->where('target', 'kelas_tertentu')->where('kelas_id', $kelas->id);
+                  });
             })
             ->orderBy('tanggal')
-            ->take(3)
+            ->take(5)
             ->get();
 
         return view('siswa.dashboard', compact('kelas', 'statusAbsenHariIni', 'jadwalHariIni', 'kegiatanTerdekat'));

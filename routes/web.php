@@ -32,6 +32,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/kegiatan', [AdminKegiatanController::class, 'index'])->name('admin.kegiatan.index');
     Route::get('/kegiatan/create', [AdminKegiatanController::class, 'create'])->name('admin.kegiatan.create');
     Route::post('/kegiatan', [AdminKegiatanController::class, 'store'])->name('admin.kegiatan.store');
+    Route::put('/kegiatan/{kegiatan}', [AdminKegiatanController::class, 'update'])->name('admin.kegiatan.update');
     Route::delete('/kegiatan/{kegiatan}', [AdminKegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
 });
 
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'role:wali_kelas', 'paksa.ganti.password'])->prefix('
     Route::patch('/presensi/{presensi}', [PresensiController::class, 'verifikasi'])->name('wali_kelas.presensi.verifikasi');
     Route::get('/kegiatan', [WaliKelasKegiatanController::class, 'index'])->name('wali_kelas.kegiatan.index');
     Route::post('/kegiatan', [WaliKelasKegiatanController::class, 'store'])->name('wali_kelas.kegiatan.store');
+    Route::put('/kegiatan/{kegiatan}', [WaliKelasKegiatanController::class, 'update'])->name('wali_kelas.kegiatan.update');
     Route::delete('/kegiatan/{kegiatan}', [WaliKelasKegiatanController::class, 'destroy'])->name('wali_kelas.kegiatan.destroy');
 });
 
