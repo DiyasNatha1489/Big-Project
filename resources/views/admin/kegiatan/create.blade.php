@@ -18,6 +18,34 @@
                 <input type="date" id="tanggal" name="tanggal" class="block w-full mt-1 border-gray-300 rounded" value="{{ old('tanggal') }}" required>
                 <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
             </div>
+            
+            <div class="flex gap-3">
+                <div class="flex-1">
+                    <x-input-label for="jam_mulai" value="Jam Mulai (opsional)" />
+                    <input type="time" id="jam_mulai" name="jam_mulai" class="block w-full mt-1 border-gray-300 rounded" value="{{ old('jam_mulai') }}">
+                </div>
+                <div class="flex-1">
+                    <x-input-label for="jam_selesai" value="Jam Selesai (opsional)" />
+                    <input type="time" id="jam_selesai" name="jam_selesai" class="block w-full mt-1 border-gray-300 rounded" value="{{ old('jam_selesai') }}">
+                    <x-input-error :messages="$errors->get('jam_selesai')" class="mt-2" />
+                </div>
+            </div>
+
+            <div>
+                <x-input-label for="lokasi" value="Lokasi (opsional)" />
+                <x-text-input id="lokasi" name="lokasi" class="block w-full mt-1" :value="old('lokasi')" placeholder="Aula sekolah, Lapangan, dst" />
+            </div>
+
+            <div>
+                <x-input-label for="dresscode" value="Dresscode (opsional)" />
+                <x-text-input id="dresscode" name="dresscode" class="block w-full mt-1" :value="old('dresscode')" placeholder="Seragam batik, bebas rapi, dst" />
+            </div>
+
+            <div>
+                <x-input-label for="peraturan" value="Peraturan / Catatan Tambahan (opsional)" />
+                <textarea id="peraturan" name="peraturan" rows="3" class="block w-full mt-1 border-gray-300 rounded" placeholder="Wajib bawa alat tulis, dilarang membawa HP, dst">{{ old('peraturan') }}</textarea>
+            </div>
+
             <div>
                 <x-input-label value="Target" />
                 <div class="mt-1 space-y-1">

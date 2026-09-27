@@ -14,34 +14,35 @@
         <a href="{{ route('admin.guru.create') }}" class="inline-block mb-4 px-4 py-2 bg-gray-800 text-white rounded">
             + Tambah Guru
         </a>
-
         <div class="bg-white shadow rounded overflow-hidden">
-            <table class="w-full text-left">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="p-3">Nama</th>
-                        <th class="p-3">Email</th>
-                        <th class="p-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($guru as $g)
-                        <tr class="border-t">
-                            <td class="p-3">{{ $g->name }}</td>
-                            <td class="p-3">{{ $g->email }}</td>
-                            <td class="p-3 space-x-2">
-                                <a href="{{ route('admin.guru.edit', $g) }}" class="text-blue-600">Edit</a>
-                                <form action="{{ route('admin.guru.destroy', $g) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus akun ini?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" class="text-red-600">Hapus</button>
-                                </form>
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="p-3">Nama</th>
+                            <th class="p-3">Email</th>
+                            <th class="p-3">Aksi</th>
                         </tr>
-                    @empty
-                        <tr><td colspan="3" class="p-3 text-gray-500">Belum ada guru.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @forelse ($guru as $g)
+                            <tr class="border-t">
+                                <td class="p-3">{{ $g->name }}</td>
+                                <td class="p-3">{{ $g->email }}</td>
+                                <td class="p-3 space-x-2">
+                                    <a href="{{ route('admin.guru.edit', $g) }}" class="text-blue-600">Edit</a>
+                                    <form action="{{ route('admin.guru.destroy', $g) }}" method="POST" class="inline" onsubmit="return confirm('Yakin hapus akun ini?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-red-600">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="3" class="p-3 text-gray-500">Belum ada guru.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table> 
+            </div>
         </div>
     </div>
 </x-admin-layout>

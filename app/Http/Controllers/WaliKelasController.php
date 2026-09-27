@@ -42,8 +42,13 @@ class WaliKelasController extends Controller
             $presensiTerbaru = Presensi::with('siswa')->where('sesi_id', $sesiHariIni->id)->latest()->take(5)->get();
         }
 
-        $kegiatanTerdekat = Kegiatan::where('kelas_id', $kelas->id)
-            ->where('tanggal', '>=', $tanggal)
+        $kegiatanTerdekat = Kegiatan::where('tanggal', '>=', $tanggal)
+            ->where(function ($q) use ($kelas) {
+                $q->where('target', 'semua_kelas')
+                ->orWhere(function ($q2) use ($kelas) {
+                    $q2->where('target', 'kelas_tertentu')->where('kelas_id', $kelas->id);
+                });
+            })
             ->orderBy('tanggal')
             ->take(3)
             ->get();

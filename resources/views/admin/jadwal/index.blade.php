@@ -21,7 +21,7 @@
             <div class="p-4 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
         @endif
 
-        <div class="flex justify-between items-center">
+        <div class="flex flex-wrap justify-between items-center gap-2">
             <form method="GET">
                 <select name="kelas_id" onchange="this.form.submit()" class="border-gray-300 rounded">
                     <option value="">Semua Kelas</option>
@@ -59,27 +59,29 @@
                                         semua
                                     </label>
                                 </div>
-                                <table class="w-full text-xs">
-                                    <tbody>
-                                        @foreach ($items as $j)
-                                            <tr class="border-t border-gray-100">
-                                                <td class="py-1.5 w-6">
-                                                    <input type="checkbox" name="ids[]" value="{{ $j->id }}"
-                                                        data-id="{{ $j->id }}"
-                                                        data-hari="{{ $j->hari }}"
-                                                        data-mapel="{{ $j->mapel }}"
-                                                        data-jam-awal="{{ $j->jam_ke_awal }}"
-                                                        data-jam-akhir="{{ $j->jam_ke_akhir }}"
-                                                        class="kelas-{{ $kelasIdGroup }} kelas-{{ $kelasIdGroup }}-{{ $hari }}">
-                                                </td>
-                                                <td class="py-1.5 w-20 text-slate-400">
-                                                    Jam {{ $j->jam_ke_awal }}@if($j->jam_ke_akhir > $j->jam_ke_awal)-{{ $j->jam_ke_akhir }}@endif
-                                                </td>
-                                                <td class="py-1.5 text-slate-700">{{ $j->mapel }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-xs">
+                                        <tbody>
+                                            @foreach ($items as $j)
+                                                <tr class="border-t border-gray-100">
+                                                    <td class="py-1.5 w-6">
+                                                        <input type="checkbox" name="ids[]" value="{{ $j->id }}"
+                                                            data-id="{{ $j->id }}"
+                                                            data-hari="{{ $j->hari }}"
+                                                            data-mapel="{{ $j->mapel }}"
+                                                            data-jam-awal="{{ $j->jam_ke_awal }}"
+                                                            data-jam-akhir="{{ $j->jam_ke_akhir }}"
+                                                            class="kelas-{{ $kelasIdGroup }} kelas-{{ $kelasIdGroup }}-{{ $hari }}">
+                                                    </td>
+                                                    <td class="py-1.5 w-20 text-slate-400 whitespace-nowrap">
+                                                        Jam {{ $j->jam_ke_awal }}@if($j->jam_ke_akhir > $j->jam_ke_awal)-{{ $j->jam_ke_akhir }}@endif
+                                                    </td>
+                                                    <td class="py-1.5 text-slate-700">{{ $j->mapel }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -89,7 +91,7 @@
             @endforelse
 
             @if ($jadwalPerKelas->isNotEmpty())
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-2">
                     <button type="button" @click="bukaEditMassal()"
                         class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
                         Edit yang Dicentang
@@ -115,7 +117,7 @@
                         <div class="border border-gray-200 rounded-lg p-3 space-y-2">
                             <input type="hidden" :name="'rows['+index+'][id]'" :value="row.id">
 
-                            <div class="flex gap-2">
+                            <div class="flex flex-col sm:flex-row gap-2">
                                 <select :name="'rows['+index+'][hari]'" x-model="row.hari" class="flex-1 text-sm border-gray-300 rounded">
                                     <option value="senin">Senin</option>
                                     <option value="selasa">Selasa</option>
@@ -127,7 +129,7 @@
                                 <input type="text" :name="'rows['+index+'][mapel]'" x-model="row.mapel" class="flex-1 text-sm border-gray-300 rounded" placeholder="Mata pelajaran">
                             </div>
 
-                            <div class="flex gap-2">
+                            <div class="flex flex-col sm:flex-row gap-2">
                                 <select :name="'rows['+index+'][jam_awal]'" x-model.number="row.jam_awal" class="flex-1 text-sm border-gray-300 rounded">
                                     @for ($i = 1; $i <= $jumlahJam; $i++)
                                         <option value="{{ $i }}">Dari Jam-{{ $i }}</option>
@@ -142,7 +144,7 @@
                         </div>
                     </template>
 
-                    <div class="flex gap-2 pt-2">
+                    <div class="flex flex-col sm:flex-row gap-2 pt-2">
                         <button type="button" @click="modalBulkOpen = false" class="flex-1 px-4 py-2 bg-gray-100 text-slate-700 text-sm font-medium rounded-lg hover:bg-gray-200">Batal</button>
                         <button type="submit" class="flex-1 px-4 py-2 bg-slate-800 text-white text-sm font-medium rounded-lg hover:bg-slate-700">Simpan Semua</button>
                     </div>
